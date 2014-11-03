@@ -1,0 +1,37 @@
+{
+  "name": "note-taker",
+  "version": "0.0.0",
+  "description": "Test for mobile day",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fresheyeball/note-taker.git"
+  },
+  "author": "Isaac Shapira",
+  "devDependencies": {
+    "LiveScript": "^1.3.1",
+    "chai": "^1.9.2",
+    "gulp": "^3.8.9",
+    "gulp-concat": "^2.4.1",
+    "gulp-filter": "^1.0.2",
+    "gulp-if": "^1.2.5",
+    "gulp-jade": "^0.9.0",
+    "gulp-karma": "0.0.4",
+    "gulp-livescript": "^2.0.0",
+    "gulp-plumber": "^0.6.6",
+    "gulp-run": "^1.6.4",
+    "gulp-stylus": "^1.3.3",
+    "karma": "^0.12.24",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.1.9",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^2.0.1"
+  },
+  "dependencies": {
+    "connect": "^3.3.2",
+    "serve-static": "^1.7.1",
+    "socket.io": "^1.2.0"
+  }
+}

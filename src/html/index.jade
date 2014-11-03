@@ -1,0 +1,16 @@
+doctype html
+html(ng-app="app")
+  head
+    title Note Taking
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css")
+    link(rel="stylesheet", href="css/style.css")
+    script(src="js/app.js")
+
+  body.ui.grid
+    #menu.four.wide.column
+      .ui.vertical.menu
+        a.active.teal.item Item 1
+    #stage.twelve.wide.column
+      div(ng-model="note",text-angular)
+
+
