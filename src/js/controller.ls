@@ -9,9 +9,6 @@
     #{ _.first it .title or $.untitled }?" then _.remove it, it[i]
 
   $.setActive = (i) -> write -> ( _.remove it, it[i] ) ++ it 
-  
   S.on "update" (d) -> (write -> d); $.$digest! unless $.$$phase
-
   $.$watch "notes" (-> read ( S.emit "update" )), true 
-
   $.toggleMenu = -> $.menu = !$.menu
