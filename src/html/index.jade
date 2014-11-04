@@ -39,8 +39,8 @@ html(ng-app="app")
       section.ui.segment(ng-if="!notes.length") 
         | You currently have no saved notes.
 
-    #stage.twelve.wide.column
-      header.ui.input.fluid
+    section#stage.twelve.wide.column
+      header#title.ui.input.fluid
         input(ng-model="notes[0].title" placeholder="Note Title")
 
       text-angular(ng-model="notes[0].body" ng-if="!menu")

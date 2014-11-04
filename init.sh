@@ -1,4 +1,2 @@
-npm install -g gulp bower karma karma-cli
-npm install
-bower install
-gulp 
+npm install -g gulp bower
+npm install && bower install --allow-root && gulp 

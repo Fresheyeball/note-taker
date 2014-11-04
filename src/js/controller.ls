@@ -1,5 +1,5 @@
 iPhoneHack = ->
-  i = _.first document.querySelectorAll "input[id*='textAngular']"
+  return unless i = _.first document.querySelectorAll "input[id*='textAngular']"
   document.body.removeChild i
   setTimeout (-> document.body.appendChild i) 200
 
