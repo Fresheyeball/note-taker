@@ -32,13 +32,24 @@ describe "Controller" ->
     expect scope.notes .to.not.be.empty
     expect scope.notes .to.deep.equal [pure]
 
-  specify "new note" ->
-    ms.on "update" -> expect it .to.deep.equal [pure]
-    scope.new!
-    
-    expect scope.notes .to.not.be.empty
-    expect scope.notes .to.have.length 1
-    expect _.first scope.notes .to.deep.equal pure
+  describe "new note" ->
+
+    specify "unshifts" ->
+      ms.on "update" -> expect it .to.deep.equal [pure]
+      scope.new!
+      
+      expect scope.notes .to.not.be.empty
+      expect scope.notes .to.have.length 1
+      expect _.first scope.notes .to.deep.equal pure
+
+    specify "s are always a copy" ->
+      scope.new!
+      scope.new!
+
+      expect scope.notes .to.deep.equal [pure, pure]
+      scope .notes[1] .title += "wowzers"
+      expect scope.notes[0].title .to.equal pure.title
+      expect scope.notes[1].title .to.equal "wowzers"
 
   specify "set active" ->    
     scope.notes = [pure, pure, impure]
