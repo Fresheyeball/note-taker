@@ -2,15 +2,47 @@ doctype html
 html(ng-app="app")
   head
     title Note Taking
-    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css")
-    link(rel="stylesheet", href="css/style.css")
+    link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css")
+    link(rel="stylesheet" href="css/style.css")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    meta(name="apple-mobile-web-app-capable" content="yes")
     script(src="js/app.js")
 
-  body.ui.grid
-    #menu.four.wide.column
-      .ui.vertical.menu
-        a.active.teal.item Item 1
+  body(ng-controller="controller")
+
+    header.ui.menu
+      .ui.item.button(ng-click="toggleMenu()")
+        i.fa.fa-bars
+      .ui.item 
+        | Note Taker
+      .ui.item.right.button(ng-click="new()")
+        | New Note
+
+    #menu.ui.large.vertical.menu.sidebar(ng-class="{active:menu}")
+
+      a.item(ng-click="toggleMenu()") 
+        i.fa.fa-close
+        |  Close
+
+      section.ui.segment(ng-if="notes.length")
+        .teal.item(ng-repeat="n in notes | filter : { title : search } track by $index"
+                    ng-class="{active:$first}"
+                    ng-click="setActive($index)") 
+          | {{n.title || untitled}}
+          a.ui.button.label.small(ng-click="delete($index); $event.stopPropagation();")
+            i.fa.fa-close
+
+        .item 
+          .ui.small.input
+            input(placeholder="Filter Notes..." ng-model="search")
+
+      section.ui.segment(ng-if="!notes.length") 
+        | You currently have no saved notes.
+
     #stage.twelve.wide.column
-      div(ng-model="note",text-angular)
+      header.ui.input.fluid
+        input(ng-model="notes[0].title" placeholder="Note Title")
+
+      div(ng-model="notes[0].body" text-angular ng-if="!menu")
 
 

@@ -4,12 +4,11 @@ require! <[
   socket.io
 ]>
 
-app = connect!.use serve-static __dirname + '/public' .listen 8080
+app    = connect!.use serve-static __dirname + '/public' .listen 8080
 
-data   = {}
+sample = title : "Sample Note", body : "Edit me"
+notes  = [sample]
 
 socket.listen app .sockets.on 'connection' (s) ->
 
-  s.emit "update" data .on "update" (obj) ->
-    data := obj
-    s.broadcast.emit "update" data
+  s.emit "update" notes .on "update" -> notes := it

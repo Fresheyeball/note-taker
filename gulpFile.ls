@@ -13,8 +13,11 @@ require! <[
 
 js = <[
   bower_components/angular/angular.js
+  bower_components/angular-mocks/angular-mocks.js
   bower_components/textAngular/dist/textAngular-sanitize.min.js
   bower_components/textAngular/dist/textAngular.min.js
+  bower_components/lodash/dist/lodash.min.js
+  bower_components/socket.io-client/socket.io.js
   src/js/* 
 ]>
 
@@ -27,7 +30,8 @@ css = <[
 p = -> plumber = gulp-plumber errorHandler : -> console.log it 
 
 filter = (k) -> gulp-filter ({path}) -> 
-  if k is "test" then false else /Test/ig.test path
+  if k is "test" then true else 
+    not /test/ig.test path and not /mock/ig.test path
 
 gulp.task "build:html" ->  
   gulp.src "src/html/*" .pipe p! .pipe gulp-jade! .pipe gulp.dest "public"
@@ -40,6 +44,7 @@ gulp.task "build:css" ->
 
 gulp.task "build:js" ->
   gulp.src js .pipe p!
+    .pipe filter!
     .pipe gulp-if /.ls/, gulp-livescript!
     .pipe gulp-concat "app.js"
     .pipe gulp.dest "public/js"
