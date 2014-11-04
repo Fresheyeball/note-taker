@@ -1,8 +1,9 @@
 iPhoneHack = ->
-  for i in document.querySelectorAll "input[id*='textAngular']" then 
-    document.body.removeChild i
+  i = _.first document.querySelectorAll "input[id*='textAngular']"
+  document.body.removeChild i
+  setTimeout (-> document.body.appendChild i) 200
 
-@app.controller "controller" ($scope, Socket) ->
+@app.controller "controller" ($scope, $window, Socket) ->
 
   $scope.notes = []
   pure         = title : "", body : ""
@@ -14,7 +15,10 @@ iPhoneHack = ->
     $scope.$digest! unless $scope.$$phase
   
   $scope.new    = -> $scope.notes.unshift pure
-  $scope.delete = -> $scope.notes = _.pull $scope.notes, $scope.notes[it]
+  $scope.delete = ->
+    t = _.first $scope.notes .title or $scope.untitled
+    if $window.confirm "Are you sure you want to delete " + t + "?"
+    then $scope.notes = _.pull $scope.notes, $scope.notes[it]
 
   $scope.setActive = ->
     a = $scope.notes[it]

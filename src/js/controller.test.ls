@@ -1,44 +1,79 @@
 class MockSocket
   l    : {}
   on   : (k,l) !-> if @l[k] then @l[k].push l else @l[k] = [l]
-  emit : (k,d) !-> for l in @l[k] when l then l d 
+  emit : (k,d) !-> for l in @l[k] when l then l d
 
-pure   = title : "", body : ""
+class MockConfirm
+  set     : (@_res) ->
+  confirm : -> @_res it 
+
+pure   = title : ""    body : ""
+impure = title : "moo" body : "mooo"
 
 describe "Controller" ->
 
   scope = null
   ms    = null
+  w     = null
 
   beforeEach module "app"
 
   beforeEach inject ($rootScope, $controller) ->
     scope := $rootScope.$new!
     ms    := new MockSocket!
-    $controller "controller" $scope : scope, Socket : ms
+    w     := new MockConfirm!
+    $controller "controller" $scope : scope, $window : w, Socket : ms
 
   beforeEach -> expect scope.notes .to.be.empty
 
   specify "notes come over the socket" ->
     ms.emit "update" [pure]
+    
     expect scope.notes .to.not.be.empty
     expect scope.notes .to.deep.equal [pure]
 
   specify "new note" ->
     ms.on "update" -> expect it .to.deep.equal [pure]
     scope.new!
+    
     expect scope.notes .to.not.be.empty
     expect scope.notes .to.have.length 1
     expect _.first scope.notes .to.deep.equal pure
 
-  specify "set active" ->
-    impure = title : "moo", body:"mooo"
+  specify "set active" ->    
     scope.notes = [pure, pure, impure]
+    
     scope.setActive 2 
     expect _.first scope.notes .to.deep.equal impure
+    
+    scope.setActive 0
+    expect _.first scope.notes .to.deep.equal impure
 
-  specify "delete" ->
-    scope.notes = [pure]
-    scope.delete 0
-    expect scope.notes .to.be.empty 
+    scope.setActive 1 
+    expect _.first scope.notes .to.deep.equal pure
 
+  describe "delete" ->
+
+    beforeEach -> scope.notes = [pure]
+
+    specify "pure" ->
+      w.set (m) ->
+        expect m .to.deep.equal "Are you sure you want to delete Untitled?"
+      scope.delete 0
+
+    specify "impure" ->
+      w.set (m) ->
+        expect m .to.deep.equal "Are you sure you want to delete moo?"
+      scope.notes = [impure]
+      scope.delete 0 
+
+    specify "true" ->
+      w.set -> true
+      scope.delete 0
+      expect scope.notes .to.be.empty
+
+    specify "false" ->
+      w.set -> false
+      scope.delete 0 
+      expect scope.notes .to.not.be.empty
+      expect scope.notes .to.deep.equal [pure]

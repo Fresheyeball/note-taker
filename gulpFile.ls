@@ -69,6 +69,7 @@ gulp.task "watch" ->
 
 gulp.task "serve" ->
   gulp.src "server.ls" .pipe gulp-livescript! .pipe gulp-run "node"
+  console.log "Note Taker is being served at localhost"
 
-gulp.task "default" <[ build watch serve ]>
+gulp.task "default" <[ build serve ]>
 

@@ -4,7 +4,7 @@ require! <[
   socket.io
 ]>
 
-app    = connect!.use serve-static __dirname + '/public' .listen 8080
+app    = connect!.use serve-static __dirname + '/public' .listen 80
 
 sample = title : "Sample Note", body : "Edit me"
 notes  = [sample]

@@ -27,7 +27,7 @@ html(ng-app="app")
       section.ui.segment(ng-if="notes.length")
         .teal.item(ng-repeat="n in notes | filter : { title : search } track by $index"
                     ng-class="{active:$first}"
-                    ng-click="setActive($index)") 
+                    ng-click="setActive($index); toggleMenu()") 
           | {{n.title || untitled}}
           a.ui.button.label.small(ng-click="delete($index); $event.stopPropagation();")
             i.fa.fa-close
@@ -43,6 +43,6 @@ html(ng-app="app")
       header.ui.input.fluid
         input(ng-model="notes[0].title" placeholder="Note Title")
 
-      div(ng-model="notes[0].body" text-angular ng-if="!menu")
+      text-angular(ng-model="notes[0].body" ng-if="!menu")
 
 
