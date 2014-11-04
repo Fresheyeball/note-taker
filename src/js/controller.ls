@@ -1,32 +1,22 @@
-iPhoneHack = ->
-  return unless i = _.first document.querySelectorAll "input[id*='textAngular']"
-  document.body.removeChild i
-  setTimeout (-> document.body.appendChild i) 200
-
-@app.controller "controller" ($scope, $window, Socket) ->
-
-  $scope.notes = []
+@app.controller "controller" <[ $scope $window Socket ]> ++ ($, $W, S) ->
   pure         = -> title : "" body : ""
+
+  read  = (f) -> f $.notes
+  write = (f) -> $.notes = f $.notes
+  write -> []
   
-  $scope.untitled = "Untitled"
-
-  update       = (d) ->
-    $scope.notes = d 
-    $scope.$digest! unless $scope.$$phase
+  untitled = $.untitled = "Untitled"
   
-  $scope.new    = -> $scope.notes.unshift pure!
-  $scope.delete = (i) ->
-    t = _.first $scope.notes .title or $scope.untitled
-    if $window.confirm "Are you sure you want to delete " + t + "?"
-    then $scope.notes = _.pull $scope.notes, $scope.notes[i]
+  $.new    = -> write -> [pure!] ++ it
+  $.delete = (i) -> read -> if $W.confirm "Are you sure you want to delete 
+    #{_.first it .title or untitled}?" then _.remove it, it[i]
 
-  $scope.setActive = (i) ->
-    $scope.notes = _.remove($scope.notes, $scope.notes[i]) ++ $scope.notes
+  $.setActive = (i) -> write -> _.remove( it, it[i] ) ++ it 
   
-  save         = -> Socket.emit "update" $scope.notes
+  S.on "update" (d) -> 
+    write -> d
+    $.$digest! unless $.$$phase
 
-  Socket.on "update" update
+  $.$watch "notes" (-> read ( S.emit "update" )), true 
 
-  $scope.$watch "notes" save, true 
-
-  $scope.toggleMenu = -> iPhoneHack!; $scope.menu = !$scope.menu
+  $.toggleMenu = -> $.menu = !$.menu
