@@ -1,7 +1,7 @@
 @app.controller "controller" <[ $scope $window Socket ]> ++ ($, $W, S) ->
   read  = (f) -> f $.notes
   write = (f) -> $.notes = f $.notes
-  write -> []  
+  write -> []
   
   $.untitled  = "Untitled"
   $.new       = -> write -> [title : "" body : ""] ++ it

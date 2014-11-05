@@ -1,7 +1,6 @@
 class MockSocket
-  l    : {}
-  on   : (k,l) -> if @l[k] then @l[k].push l else @l[k] = [l]
-  emit : (k,d) -> for l in @l[k] when l then l d
+  on   : (k,l) ~~> if @[k] then @[k] ++ l else @[k] = [l]
+  emit : (k,d) ~~> for l in @[k] when l then l d
 
 class MockConfirm
   set     : (@_res) ->
@@ -20,9 +19,8 @@ describe "Controller" ->
 
   beforeEach inject ($rootScope, $controller) ->
     scope := $rootScope.$new!
-    ms_    = new MockSocket!
+    ms    := new MockSocket!
     w     := new MockConfirm!
-    ms    := { emit : ((x,y) --> ms_.emit x, y), on : ((x,y) --> ms_.on x, y) }
     $controller "controller" $scope : scope, $window : w, Socket : ms
 
   beforeEach -> expect scope.notes .to.be.empty
