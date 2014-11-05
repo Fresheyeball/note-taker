@@ -32,4 +32,8 @@ and
 ```
     sudo gulp
 ```
-in seporate terminals (or `nohup`)
+in separate terminals (or `nohup`)
+
+#### Notes
+
+This is not teseted on Android in any way. 
