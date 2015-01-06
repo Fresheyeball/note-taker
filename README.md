@@ -1,4 +1,7 @@
 Note Taker
+
+A mobile web-app for taking notes!
+
 ===
 
 ### Execute!
