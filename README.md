@@ -1,8 +1,7 @@
 Note Taker
-
-A mobile web-app for taking notes!
-
 ===
+
+A minimal mobile web-app for taking notes!
 
 ### Execute!
 To run this application you will need `node.js` installed. If you do not have `node.js` installed please do so here: http://nodejs.org/
